@@ -15,7 +15,7 @@ NOTE: NSX Manager OVF cannot be installed via HTML5 client so for installation l
 1. Install NSX-T Manager OVA File using OVF Install Wizard
 
 <details><summary>Screenshot 1.1</summary>
-![](Images/2018-10-09-13-28-29.png)
+![a](Images/2018-10-09-13-28-29.png)
 </details>
 
 <details><summary>Screenshot 1.2</summary>
