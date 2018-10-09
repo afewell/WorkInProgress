@@ -34,13 +34,21 @@ NOTE: NSX Manager OVF cannot be installed via HTML5 client so for installation l
 ![](Images/2018-10-09-13-30-56.png)
 </details>
 
-<details><summary>Screenshot</summary>
-
+<details><summary>Screenshot 1.6</summary>
+<img src="Images/2018-10-09-13-55-04.png">
 </details>
 
-<details><summary>Screenshot</summary>
-
+<details><summary>Screenshot 1.7</summary>
+<img src="Images/2018-10-09-14-00-22.png">
 </details>
+<br/>
+1.8 On the Customize Template tab, enter the following variables:
+
+- System Root User Password: VMware1!
+- CLI Admin User Password: VMware1!
+- CLI Audit User Password: VMware1!
+- Hostname: nsx-manager
+- 
 
 <details><summary>Screenshot</summary>
 
