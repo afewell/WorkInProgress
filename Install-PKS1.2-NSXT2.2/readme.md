@@ -12,7 +12,7 @@ This is built on the standard HOL PKS Base Lab Topology
 
 This lab follows the standard documentation, which includes additional details and explanations: [NSX-T 2.2 Installation Guide](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-3E0C4CEC-D593-4395-84C4-150CD6285963.html)
 
-#### NSX-T Manager
+#### Install NSX-T Manager
 
 NOTE: NSX Manager OVF cannot be installed via HTML5 client so for installation labs please use the Flash vSphere web client.
 
@@ -116,6 +116,11 @@ This completes the NSX Manager installation, please proceed on to the Controller
 
 #### NSX-T Controller Installation
 
+This section follows the standard documentation, which includes additional details and explanations: [NSX Manager Installation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-A65FE3DD-C4F1-47EC-B952-DEDF1A3DD0CF.html)
+
+As this is a lab environment, we will only be installing a single controller, you can reference the documentation above for instructions on multi-controller installations
+
+2.0 Install NSX-T Controller
 
 
 <details><summary>Screenshot</summary>
