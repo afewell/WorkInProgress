@@ -149,6 +149,117 @@ As this is a lab environment, we will only be installing a single controller, yo
 <details><summary>Screenshot 2.2</summary>
 <img src="Images/2018-10-09-22-26-22.png">
 </details>
+<br/>
+
+2.3 In the Invalid Thumbprint dialogue box, click add to populate vCenters thumbprint
+
+<details><summary>Screenshot 2.3</summary>
+<img src="Images/2018-10-09-23-05-22.png">
+</details>
+<br/>
+
+2.4 On the Compute Managers Screen, verify that the registration status for vcsa-01a.corp.local is "Registered". If it is showing up as not registered, please see section 2.5 below.
+
+<details><summary>Screenshot 2.4</summary>
+<img src="Images/2018-10-09-23-24-08.png">
+</details>
+<br/>
+
+<details><summary>2.5 If your computer manager registration status is "Not Registered" expand this section and follow the steps</summary>
+<br/>
+2.5.1 In the NSX Manager UI on the "Compute Managers" page, click on the "Not Registered" link as shown in the following image:
+
+<img src="Images/2018-10-09-23-35-08.png">
+<br/>
+<br/>
+2.5.2 Select the checkbox next to the error shown, and click "Resolve" as in the image below:
+<img src="Images/2018-10-09-23-39-41.png">
+<br/>
+<br/>
+2.5.3 In the Resolve Errors dialogue box, enter the administrator username and password for vCenter and click "Add" as in the image below - Note that it can take a minute or two for the Registration Status to update:
+
+<img src="Images/2018-10-09-23-43-40.png">
+</details>
+<br/>
+
+2.6 In the NSX Manager web UI, expand the System panel, select the "Components" page, and select "Add Controllers"
+
+<details><summary>Screenshot 2.6</summary>
+<img src="Images/2018-10-09-23-50-34.png">
+</details>
+<br/>
+
+2.7 In the Add Controllers dialogue box on the Common Attributes page, enter the following values and click "Next":
+
+- Compute Manager: vcsa-01a.corp.local
+- Enable SSH: True
+- Enable Root Access: True
+- Join Existing Cluster: False
+- Shared Secret: VMware1!
+- CLI Password: VMware1!
+- Root Password: VMware1!
+- All other variables left to default values
+
+<details><summary>Screenshot 2.7</summary>
+<img src="Images/2018-10-09-23-58-53.png">
+</details>
+<br/>
+
+2.7 In the Add Controllers dialogue box on the Controllers page, enter the following values and click "Finish"
+
+- Hostname: nsx-controller
+- Cluster: RegionA01-MGMT01
+- Resource Pool: Null
+- Host: Null
+- Datastore: RegionA01-ISCSI01-COMP01
+- VM-RegionA01-vDS-MGMT
+- Management IP/Netmask: 192.168.100.111/24
+- Management Gateway: 192.168.100.1
+
+<details><summary>Screenshot 2.7</summary>
+<img src="Images/2018-10-10-00-11-07.png">
+</details>
+<br/>
+
+2.8 View the controller deployment status near the bottom of the Components page and wait for the controller to finish deploying. If your controller deployment has a power-on error, please see section 2.8 below. 
+
+<details><summary>Screenshot 2.8</summary>
+<img src="Images/2018-10-10-00-18-38.png">
+</details>
+<br/>
+
+<details><summary>2.9 If you have a power-on error for your controller VM, expand this section and follow the steps</summary>
+<br/>
+2.9.1 The standard PKS lab environment does not have enough RAM in the management cluster to meet the default requirement of the NSX-T 2.2 Controller. If you are using your own lab environment, you can adjust the RAM available in your manamgent cluster if you have capacity. Otherwise we will adjust the RAM used by the NSX controller VM
+
+<img src="Images/2018-10-10-00-24-47.png">
+<br/>
+2.9.2 In the vSphere web or HTML5 client, select the nsx-controller VM and Edit Settings
+
+<img src="Images/2018-10-10-00-29-51.png">
+<br/>
+2.9.3 Change the Memory to 8GB and press OK
+
+<img src="Images/2018-10-10-00-32-26.png">
+<br/>
+2.9.4 Power on the nsx-controller VM in vSphere web or HTML5 Client
+
+</details>
+<br/>
+2.10 Wait for the controller cluster to appear on the Components page in NSX Manager web UI
+<details><summary>Screenshot 2.10</summary>
+<img src="Images/2018-10-10-00-36-16.png">
+</details>
+<br/>
+2.11 Open an SSH session to nsx-manager and nsx-controller and confirm controller registration per Screenshot 2.11 below
+
+<details><summary>Screenshot 2.11</summary>
+<img src="Images/2018-10-10-00-38-33.png">
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
 
 <details><summary>Screenshot</summary>
 
@@ -158,7 +269,17 @@ As this is a lab environment, we will only be installing a single controller, yo
 
 </details>
 
+<details><summary>Screenshot</summary>
 
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
 
 
 
