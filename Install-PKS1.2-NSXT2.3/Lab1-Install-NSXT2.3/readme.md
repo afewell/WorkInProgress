@@ -330,26 +330,20 @@ This section follows the standard documentation, which includes additional detai
 
 This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
 
-4.0 Add each ESXi host to the NSX-T fabric
+4.0 Add compute cluster ESXi hosts to the NSX-T fabric
 
-4.1 Add esxi-01a to the NSX-T fabric
+4.1 
 
-4.2 In the NSX Manager web UI, go to the Fabric > Nodes > Hosts page, set "Managed by" to  "vcsa-01a.corp.local", select the checkbox for each esx host, and click Install NSX, as shown in Screenshot 4.2 below
+<details><summary>Screenshot</summary>
 
-<details><summary>Screenshot 4.2</summary>
-<img src="Images/2018-10-10-13-13-06.png">
 </details>
 
-<details><summary>Screenshot 4.3</summary>
-<br/>
-<p>Click OK</p>
-<img src="Images/2018-10-10-13-08-13.png">
-</details>
-<br/>
+<details><summary>Screenshot</summary>
 
-4.4 Monitor the deployment status on the Hosts page of the NSX Manager UI 
-<details><summary>Screenshot 4.4</summary>
-<img src="Images/2018-10-10-13-18-20.png">
+</details>
+
+<details><summary>Screenshot</summary>
+
 </details>
 
 <details><summary>Screenshot</summary>

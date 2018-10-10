@@ -1,14 +1,18 @@
-# NSX-T 2.2 Installation
+# PKS 1.2 NSXT 2.2 Installation Guide
 
 ## Overview
 
-The following installation guide follows the implementation of a functional NSX-T 2.2 Installation configured for PKS 1.2 in a vSphere nested lab environment. This implementation uses variables that function in the lab environment. Anyone is welcome to build a similar lab environment and follow along with the lab exercises, but please note you will need to replace any variables such as IP addresses and FQDNs and replace them with the appropriate values for your lab environment.
+The following installation guide follows the implementation of a functional NSX-T 2.2 and PKS 1.2 Installation in a vSphere nested lab environment. This implementation uses variables that function in the lab environment. Anyone is welcome to build a similar lab environment and follow along with the lab exercises, but please note you will need to replace any variables such as IP addresses and FQDNs and replace them with the appropriate values for your lab environment. 
+
+It is possible to build an identical lab environment that can use identical variables to those used in this lab guide. It is our intent to provide a tutorial for building an identical lab environment but it is unclear when that will be completed. In the meantime anyone seeking to build a functionally identical lab can load a live lab environment on VMware Hands on labs to identify any installation variables needed to build a comperable nested lab: [HOL-1931-01-CNA - VMware Pivotal Container Service and Kubernetes](https://www.vmwarelearningplatform.com/HOL/catalogs/catalog/874)
+
+VMware employees who have access to the OneCloud Environment can load a vApp template to provide a pre-built lab environment and follow along with the steps in this guide. For details on accessing the vApp, please check the CNA TPM Wiki on Confluence.
 
 The steps provided in this lab guide are intended for a lab implementation and do not necessarily align with best practices for production implementiations. While the instructions provided in this lab guide did work for the author in their lab environment, VMware and/or any contributors to this Guide provide no assurance, warranty or support for any content provided in this guide.
 
 ## Installation Notes
 
-Anyone who implements any software used in this lab must provide their own licensing and ensure that their use of all software is in accordance with the software's licensing. This guide provides no access to any software licenses.
+Anyone who implements any software used in this lab must provide their own licensing and ensure that their use of all software is in accordance with the software's licensing. This lab provides no access to any licenses needed to implement a comperable environment to the lab used to develop this guide.
 
 For those needing access to VMware licensing for lab and educational purposes, we recommend contacting your VMware account team. Also, the [VMware User Group's VMUG Advantage Program](https://www.vmug.com/Join/VMUG-Advantage-Membership) provides a low-cost method of gaining access to VMware licenses for evaluation purposes.
 
@@ -29,19 +33,19 @@ This section follows the standard documentation, which includes additional detai
 </details>
 
 <details><summary>Screenshot 1.2</summary>
-<img src="Images/2018-10-09-13-29-24.png">
+<img src="Images/2018-10-09-13-29-24.png>
 </details>
 
 <details><summary>Screenshot 1.3</summary>
-<img src="Images/2018-10-09-13-30-15.png">
+<img src="Images/2018-10-09-13-30-15.png>
 </details>
 
 <details><summary>Screenshot 1.4</summary>
-<img src="Images/2018-10-09-13-30-35.png">
+<img src="Images/2018-10-09-13-30-35.png>
 </details>
 
 <details><summary>Screenshot 1.5</summary>
-<img src="Images/2018-10-09-13-30-56.png">
+<img src="Images/2018-10-09-13-30-56.png>
 </details>
 
 <details><summary>Screenshot 1.6</summary>
@@ -253,103 +257,8 @@ As this is a lab environment, we will only be installing a single controller, yo
 <img src="Images/2018-10-10-00-38-33.png">
 </details>
 
-#### NSX-T Edge Installation
-
-This section follows the standard documentation, which includes additional details and explanations: [Automatic Deployment of NSX Edge VMs from NSX Manager](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-8C8A8A1E-3E4F-4C62-A373-B37018145E6E.html)
-
-3.0 Install NSX Edge VM
-
-3.1 Open a browser to the NSX Manager web UI and select Fabric > Nodes > Edges > Add Edge VM
-
-<details><summary>Screenshot 3.1</summary>
-<img src="Images/2018-10-10-01-45-24.png">
-</details>
-<br/>
-
-3.2 In the Add Edge VM dialogue box, on the Name and Description tab, enter the following variables:
-
-- Name: nsx-edge
-- Host Name/FQDN: nsx-edge.corp.local
-- Form Factor: Large
-
 <details><summary>Screenshot</summary>
-<img src="Images/2018-10-10-01-57-27.png">
-</details>
 
-3.3 In the Add Edge VM dialogue box, on the Credentials tab, enter the following variables:
-
-- CLI Password: VMware1!
-- System Root Password: VMware1!
-
-<details><summary>Screenshot 3.3</summary>
-<img src="Images/2018-10-10-02-00-54.png">
-</details>
-
-3.4 In the Add Edge VM dialogue box, on the Configure Deployment tab, enter the following variables:
-
-- Compute Manager: vcsa-01a.corp.local
-- Cluster: RegionA01-MGMT01
-- Resource Pool: Null
-- Host: Null
-- Datastore: RegionA01-ISCS01-COMP01
-
-<details><summary>Screenshot 3.4</summary>
-<img src="Images/2018-10-10-02-03-25.png">
-</details>
-
-3.5 In the Add Edge VM dialogue box, on the Configure Ports tab, enter the following variables:
-
-- Ip Assignment: Static
-- Management IP: 192.168.100.112/24
-- Default Gateway: 192.168.100.1
-- Management Interface: VM-RegionA01-vDS-MGMT
-- Datapath Interface #1: VM-RegionA01-vDS-MGMT
-
-<details><summary>Screenshot 3.5</summary>
-<img src="Images/2018-10-10-02-10-03.png">
-</details>
-<br/>
-
-3.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
-
-3.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
-<details><summary>Screenshot 3.7</summary>
-<img src="Images/2018-10-10-02-42-22.png">
-</details>
-<br/>
-
-3.7.1 If your nsx-edge VM is not powered on, power it on now
-
-3.8 Return to the Fabric > Nodes > Edges screen in the NSX Manager web UI, verify the deployment status is "Node Ready" and the Manager Connection is "Up" before proceeding. This may take several minutes after powering on the Edge VM
-
-<details><summary>Screenshot 3.8</summary>
-<img src="Images/2018-10-10-02-45-21.png">
-</details>
-
-#### NSX-T Host Preparation
-
-This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
-
-4.0 Add each ESXi host to the NSX-T fabric
-
-4.1 Add esxi-01a to the NSX-T fabric
-
-4.2 In the NSX Manager web UI, go to the Fabric > Nodes > Hosts page, set "Managed by" to  "vcsa-01a.corp.local", select the checkbox for each esx host, and click Install NSX, as shown in Screenshot 4.2 below
-
-<details><summary>Screenshot 4.2</summary>
-<img src="Images/2018-10-10-13-13-06.png">
-</details>
-
-<details><summary>Screenshot 4.3</summary>
-<br/>
-<p>Click OK</p>
-<img src="Images/2018-10-10-13-08-13.png">
-</details>
-<br/>
-
-4.4 Monitor the deployment status on the Hosts page of the NSX Manager UI 
-<details><summary>Screenshot 4.4</summary>
-<img src="Images/2018-10-10-13-18-20.png">
 </details>
 
 <details><summary>Screenshot</summary>
