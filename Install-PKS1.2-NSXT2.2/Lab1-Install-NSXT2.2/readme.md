@@ -29,19 +29,19 @@ This section follows the standard documentation, which includes additional detai
 </details>
 
 <details><summary>Screenshot 1.2</summary>
-<img src="Images/2018-10-09-13-29-24.png>
+<img src="Images/2018-10-09-13-29-24.png">
 </details>
 
 <details><summary>Screenshot 1.3</summary>
-<img src="Images/2018-10-09-13-30-15.png>
+<img src="Images/2018-10-09-13-30-15.png">
 </details>
 
 <details><summary>Screenshot 1.4</summary>
-<img src="Images/2018-10-09-13-30-35.png>
+<img src="Images/2018-10-09-13-30-35.png">
 </details>
 
 <details><summary>Screenshot 1.5</summary>
-<img src="Images/2018-10-09-13-30-56.png>
+<img src="Images/2018-10-09-13-30-56.png">
 </details>
 
 <details><summary>Screenshot 1.6</summary>
@@ -328,9 +328,11 @@ This section follows the standard documentation, which includes additional detai
 
 #### NSX-T Host Preparation
 
-This section follows the standard documentation, which includes additional details and explanations: [Automatic Deployment of NSX Edge VMs from NSX Manager](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-8C8A8A1E-3E4F-4C62-A373-B37018145E6E.html)
+This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
 
-3.0 Install NSX Edge VM
+4.0 Add compute cluster ESXi hosts to the NSX-T fabric
+
+4.1 
 
 <details><summary>Screenshot</summary>
 
