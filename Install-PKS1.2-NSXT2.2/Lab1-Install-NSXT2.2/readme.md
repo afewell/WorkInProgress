@@ -255,7 +255,90 @@ As this is a lab environment, we will only be installing a single controller, yo
 
 #### NSX-T Edge Installation
 
-This section follows the standard documentation, which includes additional details and explanations: [Configure Automated Installation of Controller and Cluster using the NSX Manager UI](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-92843E38-127B-4F85-8B7A-C8027E86175C.html)
+This section follows the standard documentation, which includes additional details and explanations: [Automatic Deployment of NSX Edge VMs from NSX Manager](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-8C8A8A1E-3E4F-4C62-A373-B37018145E6E.html)
+
+3.0 Install NSX Edge VM
+
+3.1 Open a browser to the NSX Manager web UI and select Fabric > Nodes > Edges > Add Edge VM
+
+<details><summary>Screenshot 3.1</summary>
+<img src="Images/2018-10-10-01-45-24.png">
+</details>
+<br/>
+
+3.2 In the Add Edge VM dialogue box, on the Name and Description tab, enter the following variables:
+
+- Name: nsx-edge
+- Host Name/FQDN: nsx-edge.corp.local
+- Form Factor: Large
+
+<details><summary>Screenshot</summary>
+<img src="Images/2018-10-10-01-57-27.png">
+</details>
+
+3.3 In the Add Edge VM dialogue box, on the Credentials tab, enter the following variables:
+
+- CLI Password: VMware1!
+- System Root Password: VMware1!
+
+<details><summary>Screenshot 3.3</summary>
+<img src="Images/2018-10-10-02-00-54.png">
+</details>
+
+3.4 In the Add Edge VM dialogue box, on the Configure Deployment tab, enter the following variables:
+
+- Compute Manager: vcsa-01a.corp.local
+- Cluster: RegionA01-MGMT01
+- Resource Pool: Null
+- Host: Null
+- Datastore: RegionA01-ISCS01-COMP01
+
+<details><summary>Screenshot 3.4</summary>
+<img src="Images/2018-10-10-02-03-25.png">
+</details>
+
+3.5 In the Add Edge VM dialogue box, on the Configure Ports tab, enter the following variables:
+
+- Ip Assignment: Static
+- Management IP: 192.168.100.112/24
+- Default Gateway: 192.168.100.1
+- Management Interface: VM-RegionA01-vDS-MGMT
+- Datapath Interface #1: VM-RegionA01-vDS-MGMT
+
+<details><summary>Screenshot 3.5</summary>
+<img src="Images/2018-10-10-02-10-03.png">
+</details>
+<br/>
+
+3.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
+
+3.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
+<details><summary>Screenshot 3.7</summary>
+<img src="Images/2018-10-10-02-42-22.png">
+</details>
+<br/>
+
+3.7.1 If your nsx-edge VM is not powered on, power it on now
+
+3.8 Return to the Fabric > Nodes > Edges screen in the NSX Manager web UI, verify the deployment status is "Node Ready" and the Manager Connection is "Up" before proceeding. This may take several minutes after powering on the Edge VM
+
+<details><summary>Screenshot 3.8</summary>
+<img src="Images/2018-10-10-02-45-21.png">
+</details>
+
+#### NSX-T Host Preparation
+
+This section follows the standard documentation, which includes additional details and explanations: [Automatic Deployment of NSX Edge VMs from NSX Manager](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-8C8A8A1E-3E4F-4C62-A373-B37018145E6E.html)
+
+3.0 Install NSX Edge VM
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
 
 <details><summary>Screenshot</summary>
 

@@ -22,4 +22,4 @@ For those needing access to VMware licensing for lab and educational purposes, w
 
 ### [Lab 2 - NSX-T 2.2 Configuration for PKS](./Lab2-Configure-NSXT2.2-for-PKS)
 
-### [Lab 3 - Install and Configure Ops Manager](./Lab3-InstallandConfigure-OpsMan-for-PKS)
+### [Lab 3 - Install and Configure Ops Manager 2.3](./Lab3-InstallandConfigure-OpsMan-for-PKS)
