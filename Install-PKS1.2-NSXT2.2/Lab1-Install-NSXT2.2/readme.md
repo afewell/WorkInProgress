@@ -326,7 +326,7 @@ This section follows the standard documentation, which includes additional detai
 <img src="Images/2018-10-10-02-45-21.png">
 </details>
 
-#### NSX-T Host Preparation
+#### NSX-T Host Preparation (VIB Installation)
 
 This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
 
@@ -351,15 +351,43 @@ This section follows the standard documentation, which includes additional detai
 <details><summary>Screenshot 4.4</summary>
 <img src="Images/2018-10-10-13-18-20.png">
 </details>
-
-<details><summary>Screenshot</summary>
-
+<br/>
+<details><summary>If the NSX Installation/Host Preparation Fails, expand this section and follow steps</summary>
+<p>If your Deployment Status results in NSX Installation Failed, reboot affected hosts, set affected host to maintenance mode, and try again, per the following steps</p>
+<p>The Following Steps apply to ESXi Hosts in the management cluster, if you have an NSX Installation/Host Prep failure on your compute nodes, you do not need to shutdown the nsx controller and edge VMs and can skip those steps
+<ul>
+<li>SSH or console into the nsx-controller VM and enter the shutdown command to shut down the controller</li>
+<li>SSH or console into the nsx-edge VM and enter the shutdown command to shut down the edge</li>
+<li>In the vSphere web client, check which esxi host that the NSX Manager (NSX unified appliance) VM is running on.</li>
+<li>Place the esxi host that the NSX Manager is NOT running on into maintenance mode. For example, if your NSX Manager VM is running on esx-05a, then place esx-04a into maintenance mode</li>
+<li>In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local".</li>
+<li>In the Deployment Status column for esx-04a.corp.local, click on the "NSX Installation Failed" link and follow the prompts to resolve any errors displayed</li>
+<li>It will take several minutes to attempt to reinstall NSX VIBs on esx-04a, wait until the deployment is completed and Deployment Status is "NSX Installed",</li>
+<li>If the host preparation is still failing, additional troubleshooting steps are beyond the scope of this course</li>
+<li>After Deployment status for esx-04a is "NSX Installed", in the vSphere web client, take esx-04a out of maintenance mode</li>
+<li>Migrate the NSX Manager VM from esx-05a to esx-04a</li>
+<li>After migration is complete, place esx-05a in maintenance mode</li>
+<li>In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local".</li>
+<li>In the Deployment Status column for esx-05a.corp.local, click on the "NSX Installation Failed" link and follow the prompts to resolve any errors displayed</li>
+<li>It will take several minutes to attempt to reinstall NSX VIBs on esx-05a, wait until the deployment is completed and Deployment Status is "NSX Installed",</li>
+<li>If the host preparation is still failing, additional troubleshooting steps are beyond the scope of this course</li>
+<li>Take esx-05a out of maintenance mode</li>
+<li>Migrate NSX Manager VM back to esx-05a</li>
+<li>Repeat steps as needed until all hosts have deployment status set to "NSX Installed"</li>
+<li><em>Be sure to power on the NSX Controller and Edge VMs  and wait for them to boot and reconnect to NSX Manager if needed after you complete VIB installation</em></li>
+</ul></p>
 </details>
+<br/>
+4.5 In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local" and verify that the deployment status for all esx hosts is set to "NSX Installed" before proceeding
 
-<details><summary>Screenshot</summary>
-
+<details><summary>Screenshot 4.5</summary>
+<img src="Images/2018-10-10-16-10-36.png">
 </details>
+<br/>
 
+#### NSX-T Transport Zone and Transport Node Setup
+
+This section follows the standard documentation, which includes additional details and explanations: [Transport Zones and Transport Nodes](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-7EA5F174-9D29-45DF-BDE8-94EAE57F9B62.html)
 <details><summary>Screenshot</summary>
 
 </details>
