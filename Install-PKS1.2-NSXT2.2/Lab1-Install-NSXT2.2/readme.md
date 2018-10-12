@@ -217,7 +217,7 @@ As this is a lab environment, we will only be installing a single controller, yo
 </details>
 <br/>
 
-2.8 View the controller deployment status near the bottom of the Components page and wait for the controller to finish deploying. If your controller deployment has a power-on error, please see section 2.8 below. 
+2.8 View the controller deployment status near the bottom of the Components page and wait for the controller to finish deploying. If your controller deployment has a power-on error, please see section 2.8 below.
 
 <details><summary>Screenshot 2.8</summary>
 <img src="Images/2018-10-10-00-18-38.png">
@@ -347,7 +347,7 @@ This section follows the standard documentation, which includes additional detai
 </details>
 <br/>
 
-4.4 Monitor the deployment status on the Hosts page of the NSX Manager UI 
+4.4 Monitor the deployment status on the Hosts page of the NSX Manager UI
 <details><summary>Screenshot 4.4</summary>
 <img src="Images/2018-10-10-13-18-20.png">
 </details>
@@ -388,6 +388,72 @@ This section follows the standard documentation, which includes additional detai
 #### NSX-T Transport Zone and Transport Node Setup
 
 This section follows the standard documentation, which includes additional details and explanations: [Transport Zones and Transport Nodes](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-7EA5F174-9D29-45DF-BDE8-94EAE57F9B62.html)
+
+5.0 Create an IP Pool for Tunnel Endpoint IP Addresses
+
+5.1 In the NSX Manager UI, go to Inventory > Groups > IP Pools and click "Add"
+
+<details><summary>Screenshot5.1</summary>
+<img src="Images/2018-10-11-15-52-41.png">
+</details>
+<br/>
+5.2 Create an IP pool with the following details:
+
+- Name: ip-pool-teps
+- Click "Add" to add a subnet
+  - IP Range 192.168.130.51 - 192.168.130.75
+  - Gateway: 192.168.130.1
+  - CIDR: 192.168.130.0/24
+  - DNS Servers: 192.168.110.10
+  - DNS Suffix: corp.local
+
+<details><summary>Screenshot 5.2</summary>
+<img src="Images/2018-10-11-16-38-42.png">
+</details>
+<br/>
+
+5.3 To complete NSX-T Installation, NSX-T manager needs to be configured with two uplink profiles, one for hosts and one for edges.
+
+5.3.1 In the NSX Manager UI, go to Fabric > Profiles > Uplink Profiles
+
+<details><summary>Screenshot 5.3.1</summary>
+<img src="Images/2018-10-11-18-03-48.png">
+</details>
+<br/>
+
+5.3.2 Verify that the edge network uplink profile matches the configuration in Screenshot 1.3.2 below. If for any reason the edge network profile does not already exist, add a network profile per Screenshot 1.3.2
+
+<details><summary>Screenshot 5.3.2</summary>
+<img src="Images/2018-10-11-18-02-42.png">
+</details>
+<br/>
+
+5.3.3 Verify that the host network uplink profile matches the configuration in Screenshot 1.3.3 below. If for any reason the host network profile does not already exist, add a network profile per Screenshot 1.3.3
+
+<details><summary>Screenshot 5.3.3</summary>
+<img src="Images/2018-10-11-18-09-55.png">
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
+<details><summary>Screenshot</summary>
+
+</details>
+
 <details><summary>Screenshot</summary>
 
 </details>
