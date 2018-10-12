@@ -330,25 +330,23 @@ This section follows the standard documentation, which includes additional detai
 
 This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
 
-4.0 Add each ESXi host to the NSX-T fabric
+4.0 Install NSX VIBs to all esxi hosts
 
-4.1 Add esxi-01a to the NSX-T fabric
+4.1 In the NSX Manager web UI, go to the Fabric > Nodes > Hosts page, set "Managed by" to  "vcsa-01a.corp.local", select the checkbox for each esx host, and click Install NSX, as shown in Screenshot 4.1 below
 
-4.2 In the NSX Manager web UI, go to the Fabric > Nodes > Hosts page, set "Managed by" to  "vcsa-01a.corp.local", select the checkbox for each esx host, and click Install NSX, as shown in Screenshot 4.2 below
-
-<details><summary>Screenshot 4.2</summary>
+<details><summary>Screenshot 4.1</summary>
 <img src="Images/2018-10-10-13-13-06.png">
 </details>
 
-<details><summary>Screenshot 4.3</summary>
+<details><summary>Screenshot 4.2</summary>
 <br/>
 <p>Click OK</p>
 <img src="Images/2018-10-10-13-08-13.png">
 </details>
 <br/>
 
-4.4 Monitor the deployment status on the Hosts page of the NSX Manager UI
-<details><summary>Screenshot 4.4</summary>
+4.3 Monitor the deployment status on the Hosts page of the NSX Manager UI
+<details><summary>Screenshot 4.3</summary>
 <img src="Images/2018-10-10-13-18-20.png">
 </details>
 <br/>
@@ -378,9 +376,9 @@ This section follows the standard documentation, which includes additional detai
 </ul></p>
 </details>
 <br/>
-4.5 In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local" and verify that the deployment status for all esx hosts is set to "NSX Installed" before proceeding
+4.4 In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local" and verify that the deployment status for all esx hosts is set to "NSX Installed" before proceeding
 
-<details><summary>Screenshot 4.5</summary>
+<details><summary>Screenshot 4.4</summary>
 <img src="Images/2018-10-10-16-10-36.png">
 </details>
 <br/>
