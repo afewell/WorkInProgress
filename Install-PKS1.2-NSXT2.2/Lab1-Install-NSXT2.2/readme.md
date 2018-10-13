@@ -431,17 +431,47 @@ This section follows the standard documentation, which includes additional detai
 <details><summary>Screenshot 5.3.3</summary>
 <img src="Images/2018-10-11-18-09-55.png">
 </details>
+<br/>
 
-<details><summary>Screenshot</summary>
+5.4 Add a transport zone for overlay networks
 
+5.4.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
+
+<details><summary>Screenshot 5.4.1</summary>
+<img src="Images/2018-10-13-15-19-11.png">
 </details>
+<br/>
 
-<details><summary>Screenshot</summary>
+5.4.2 Add an overlay transport zone with the following details:
 
+- Name: tz-verlay
+- N-VDS Name: hs-overlay
+- N-VDS Mode: Standard
+- Traffic Type: Overlay
+
+<details><summary>Screenshot 5.4.2</summary>
+<img src="Images/2018-10-13-15-25-47.png">
 </details>
+<br/>
+
+5.5 Add a transport zone for VLAN networks
+
+5.5.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
+
+<details><summary>Screenshot 5.5.1</summary>
+<img src="Images/2018-10-13-15-19-11.png">
+</details>
+<br/>
+
+5.5.2 Add an vlan transport zone with the following details:
+
+- Name: tz-vlan
+- N-VDS Name: hs-vlan
+- N-VDS Mode: Standard
+- Traffic Type: VLAN
 
 <details><summary>Screenshot</summary>
-
+<img src="Images/2018-10-13-15-29-13.png">
 </details>
 
 <details><summary>Screenshot</summary>
