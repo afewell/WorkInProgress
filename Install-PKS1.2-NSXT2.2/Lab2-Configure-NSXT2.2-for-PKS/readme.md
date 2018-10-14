@@ -2,7 +2,7 @@
 
 ## Overview
 
-The following installation guide follows the implementation of a functional NSX-T 2.2 Installation configured for PKS 1.2 in a vSphere nested lab environment. This implementation uses variables that function in the lab environment. Anyone is welcome to build a similar lab environment and follow along with the lab exercises, but please note you will need to replace any variables such as IP addresses and FQDNs and replace them with the appropriate values for your lab environment.
+Lab 2 Continues on from Lab 1 with the configuration of NSX-T for PKS. 
 
 The steps provided in this lab guide are intended for a lab implementation and do not necessarily align with best practices for production implementiations. While the instructions provided in this lab guide did work for the author in their lab environment, VMware and/or any contributors to this Guide provide no assurance, warranty or support for any content provided in this guide.
 
@@ -12,15 +12,22 @@ Anyone who implements any software used in this lab must provide their own licen
 
 For those needing access to VMware licensing for lab and educational purposes, we recommend contacting your VMware account team. Also, the [VMware User Group's VMUG Advantage Program](https://www.vmug.com/Join/VMUG-Advantage-Membership) provides a low-cost method of gaining access to VMware licenses for evaluation purposes.
 
-5.0 Create an IP Pool for Tunnel Endpoint IP Addresses
+### Configure NSX-T for PKS
 
-5.1 In the NSX Manager UI, go to Inventory > Groups > IP Pools and click "Add"
+This section follows the PKS Documentation, which includes additional details and explanations -  [Step 3: Create the NSX-T Opbjects Required for PKS](https://docs.pivotal.io/runtimes/pks/1-2/nsxt-prepare-env.html#create-objects)
 
-<details><summary>Screenshot5.1</summary>
+1.0 Create NSX Network Objects
+
+1.1 Create IP Pools for Tunnel Endpoint IP Addresses and NSX Load Balancer Virtual IP addresses
+
+1.1.1 In the NSX Manager UI, go to Inventory > Groups > IP Pools and click "Add"
+
+<details><summary>Screenshot 1.1.1</summary>
 <img src="Images/2018-10-11-15-52-41.png">
 </details>
 <br/>
-5.2 Create an IP pool with the following details:
+
+1.1.2 Create an IP pool for tunnel endpoints with the following details:
 
 - Name: ip-pool-teps
 - Click "Add" to add a subnet
@@ -30,91 +37,97 @@ For those needing access to VMware licensing for lab and educational purposes, w
   - DNS Servers: 192.168.110.10
   - DNS Suffix: corp.local
 
-<details><summary>Screenshot 5.2</summary>
+<details><summary>Screenshot 1.1.2</summary>
 <img src="Images/2018-10-11-16-38-42.png">
 </details>
 <br/>
 
-5.3 To complete NSX-T Installation, NSX-T manager needs to be configured with two uplink profiles, one for hosts and one for edges.
+1.1.3 Create an IP pool for NSX Load Balancer VIPs with the following details:
 
-5.3.1 In the NSX Manager UI, go to Fabric > Profiles > Uplink Profiles
+- Name: ip-pool-vips
+- Click "Add" to add a subnet
+  - IP Range 10.40.14.34 -  10.40.14.62
+  - CIDR: 10.40.14.32/27
 
-<details><summary>Screenshot 5.3.1</summary>
-<img src="Images/2018-10-11-18-03-48.png">
+<details><summary>Screenshot 1.1.3</summary>
+<img src="Images/2018-10-14-11-56-36.png">
 </details>
 <br/>
 
-5.3.2 Verify that the edge network uplink profile matches the configuration in Screenshot 1.3.2 below. If for any reason the edge network profile does not already exist, add a network profile per Screenshot 1.3.2
+1.2 Add transport zones for overlay and VLAN networks
 
-<details><summary>Screenshot 5.3.2</summary>
-<img src="Images/2018-10-11-18-02-42.png">
-</details>
-<br/>
+1.2.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
 
-5.3.3 Verify that the host network uplink profile matches the configuration in Screenshot 1.3.3 below. If for any reason the host network profile does not already exist, add a network profile per Screenshot 1.3.3
-
-<details><summary>Screenshot 5.3.3</summary>
-<img src="Images/2018-10-11-18-09-55.png">
-</details>
-<br/>
-
-5.4 Add a transport zone for overlay networks
-
-5.4.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
-
-<details><summary>Screenshot 5.4.1</summary>
+<details><summary>Screenshot 1.2.1</summary>
 <img src="Images/2018-10-13-15-19-11.png">
 </details>
 <br/>
 
-5.4.2 Add an overlay transport zone with the following details:
+1.2.2 Add an overlay transport zone with the following details:
 
 - Name: tz-verlay
 - N-VDS Name: hs-overlay
 - N-VDS Mode: Standard
 - Traffic Type: Overlay
 
-<details><summary>Screenshot 5.4.2</summary>
+<details><summary>Screenshot 1.2.2</summary>
 <img src="Images/2018-10-13-15-25-47.png">
 </details>
 <br/>
 
-5.5 Add a transport zone for VLAN networks
-
-5.5.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
-
-<details><summary>Screenshot 5.5.1</summary>
-<img src="Images/2018-10-13-15-19-11.png">
-</details>
-<br/>
-
-5.5.2 Add an vlan transport zone with the following details:
+1.2.3 Add an vlan transport zone with the following details:
 
 - Name: tz-vlan
 - N-VDS Name: hs-vlan
 - N-VDS Mode: Standard
 - Traffic Type: VLAN
 
-<details><summary>Screenshot 5.5.2</summary>
+<details><summary>Screenshot 1.2.3</summary>
 <img src="Images/2018-10-13-15-29-13.png">
 </details>
 
-5.6 Configure all each esxi hosts that may host VMs that connect to an NSX-T Overlay or VLAN network and your NSX Edge vm as Transport Nodes using the following procedure.
+1.3 NSX-T manager installation provides 2 default uplink profiles, one for overlays and one for vlans. In this lab and in other general use cases, the default uplink profiles work fine so you can skip section 1.3, or you can follow through step 1.3 to view and validate the uplink profiles and adjust if needed for your environment
+
+<details><summary> If you would like to review or update the default uplink profiles, expand this section, otherwise proceed to step 1.4</summary>
+
+1.3.1 In the NSX Manager UI, go to Fabric > Profiles > Uplink Profiles
+
+<details><summary>Screenshot 1.3.1</summary>
+<img src="Images/2018-10-11-18-03-48.png">
+</details>
+<br/>
+
+1.3.2 Observe the configuration of the profile and adjust as needed
+
+<details><summary>Screenshot 1.3.2</summary>
+<img src="Images/2018-10-11-18-02-42.png">
+</details>
+<br/>
+
+1.3.3 Observe the configuration of the profile and adjust as needed
+
+<details><summary>Screenshot 1.3.3</summary>
+<img src="Images/2018-10-11-18-09-51.png">
+</details>
+</details>
+<br/>
+
+1.4 Configure each esxi host in your vCenter environment that may need connect to an NSX-T Overlay or VLAN network and your NSX Edge vm as Transport Nodes using the following procedure.
 
 For the lab environment used in this example, configure all esxi hosts and your NSX Edge VM as transport nodes
 
-5.6.1 In the NSX Manager UI, go to Fabric > Nodes > Transport Zones and click "ADD"
+1.4.1 In the NSX Manager UI, go to Fabric > Nodes > Transport Zones and click "ADD"
 
-<details><summary>Screenshot 5.6.1</summary>
+<details><summary>Screenshot 1.4.1</summary>
 <img src="Images/2018-10-13-16-10-27.png">
 </details>
 <br/>
 
-5.6.2 Complete the Add Transport Node for each relevant esxi host and NSX Edge vm. The esxi hosts should be added to the tz-overlay transport zone, and the NSX Edge VM should be added to both the tz-overlay and tz-vlan transport zones.
+1.4.2 Complete the Add Transport Node for each relevant esxi host and NSX Edge vm. The esxi hosts should be added to the tz-overlay transport zone, and the NSX Edge VM should be added to both the tz-overlay and tz-vlan transport zones.
 
 After you fill in the variables in the General tab of the Add Transport Node wizard, click "ADD". You do not need to make any edits to the N-VDS tab of the Add Transport Zone wizard
 
-5.6.2.1 Add Transport Node for esxi hosts with the following details:
+1.4.2.1 Add Transport Node for esxi hosts with the following details:
 
 - Name: esx-01a
   - Update the name for each esxi host you add
@@ -132,20 +145,20 @@ After you fill in the variables in the General tab of the Add Transport Node wiz
   - Column 1: vmnic1
   - Column 2: uplink-1
 
-<details><summary>Screenshot 5.6.2.1.1</summary>
+<details><summary>Screenshot 1.4.2.1.1</summary>
 <img src="Images/2018-10-13-16-26-06.png">
 </details>
 
-<details><summary>Screenshot 5.6.2.1.2</summary>
+<details><summary>Screenshot 1.4.2.1.2</summary>
 <img src="Images/2018-10-13-16-42-06.png">
 </details>
 
-<details><summary>Screenshot 5.6.2.1.3</summary>
+<details><summary>Screenshot 1.4.2.1.3</summary>
 <img src="Images/2018-10-13-17-05-06.png">
 </details>
 <br/>
 
-5.6.2.2 Add Transport Node for NSX Edge VM
+1.4.2.2 Add Transport Node for NSX Edge VM with the following details:
 
 - Name: nsx-edge
 - Node: nsx-edge
@@ -168,32 +181,49 @@ After you fill in the variables in the General tab of the Add Transport Node wiz
 
  Note that once added, it can take up to a few minutes before the transport node status changes to "Up"
 
-<details><summary>Screenshot 5.6.2.2.1</summary>
+<details><summary>Screenshot 1.4.2.2.1</summary>
 <img src="Images/2018-10-13-17-09-31.png">
 </details>
 
-<details><summary>Screenshot 5.6.2.2.2</summary>
+<details><summary>Screenshot 1.4.2.2.2</summary>
 <img src="Images/2018-10-13-17-20-32.png">
 </details>
 
-<details><summary>Screenshot 5.6.2.2.3</summary>
+<details><summary>Screenshot 1.4.2.2.3</summary>
 <img src="Images/2018-10-13-17-21-22.png">
 </details>
 
-<details><summary>Screenshot 5.6.2.2.4</summary>
+<details><summary>Screenshot 1.4.2.2.4</summary>
 <img src="Images/2018-10-13-18-23-37.png">
 </details>
 <br/>
 
-5.6.3
+1.5 Create NSX IP Blocks for node and pod networks
 
-<details><summary>Screenshot</summary>
+1.5.1 In the NSX Manager UI, in the navigation bar select DDI > IPAM and click "Add"
 
+<details><summary>Screenshot 1.5.1</summary>
+<img src="Images/2018-10-14-13-03-54.png">
+</details>
+<br/>
+
+1.5.2 Add the following 3 IP Blocks
+
+- Block1
+  - Name: ip-block-pks-nodes-snat
+  - CIDR: 172.15.0.0/16
+- Block2
+  - Name: ip-block-pks-pods-NO-snat
+  - 172.100.0.0/16
+- Block3
+  - Name: ip-block-pks-pods-snat
+  - CIDR: 172.16.0.0/16
+
+<details><summary>Screenshot 1.5.2</summary>
+<img src="Images/2018-10-14-13-15-42.png">
 </details>
 
-<details><summary>Screenshot</summary>
 
-</details>
 
 <details><summary>Screenshot</summary>
 
