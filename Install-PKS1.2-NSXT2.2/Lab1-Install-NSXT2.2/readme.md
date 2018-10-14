@@ -312,7 +312,10 @@ This section follows the standard documentation, which includes additional detai
 
 3.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
 
-3.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
+3.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation.
+
+This setting should only be used for lab environments, and even then should only be used if needed. It can result in reduced software performance, but is very useful to enable more VM deployments in resource constrained lab environments.
+
 <details><summary>Screenshot 3.7</summary>
 <img src="Images/2018-10-10-02-42-22.png">
 </details>
@@ -376,130 +379,11 @@ This section follows the standard documentation, which includes additional detai
 </ul></p>
 </details>
 <br/>
+
 4.4 In the NSX Manager web UI on the Fabric > Nodes > Hosts page, ensure that "Managed by" is set to "vcsa-01a.corp.local" and verify that the deployment status for all esx hosts is set to "NSX Installed" before proceeding
 
 <details><summary>Screenshot 4.4</summary>
 <img src="Images/2018-10-10-16-10-36.png">
 </details>
-<br/>
 
-#### NSX-T Transport Zone and Transport Node Setup
-
-This section follows the standard documentation, which includes additional details and explanations: [Transport Zones and Transport Nodes](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-7EA5F174-9D29-45DF-BDE8-94EAE57F9B62.html)
-
-5.0 Create an IP Pool for Tunnel Endpoint IP Addresses
-
-5.1 In the NSX Manager UI, go to Inventory > Groups > IP Pools and click "Add"
-
-<details><summary>Screenshot5.1</summary>
-<img src="Images/2018-10-11-15-52-41.png">
-</details>
-<br/>
-5.2 Create an IP pool with the following details:
-
-- Name: ip-pool-teps
-- Click "Add" to add a subnet
-  - IP Range 192.168.130.51 - 192.168.130.75
-  - Gateway: 192.168.130.1
-  - CIDR: 192.168.130.0/24
-  - DNS Servers: 192.168.110.10
-  - DNS Suffix: corp.local
-
-<details><summary>Screenshot 5.2</summary>
-<img src="Images/2018-10-11-16-38-42.png">
-</details>
-<br/>
-
-5.3 To complete NSX-T Installation, NSX-T manager needs to be configured with two uplink profiles, one for hosts and one for edges.
-
-5.3.1 In the NSX Manager UI, go to Fabric > Profiles > Uplink Profiles
-
-<details><summary>Screenshot 5.3.1</summary>
-<img src="Images/2018-10-11-18-03-48.png">
-</details>
-<br/>
-
-5.3.2 Verify that the edge network uplink profile matches the configuration in Screenshot 1.3.2 below. If for any reason the edge network profile does not already exist, add a network profile per Screenshot 1.3.2
-
-<details><summary>Screenshot 5.3.2</summary>
-<img src="Images/2018-10-11-18-02-42.png">
-</details>
-<br/>
-
-5.3.3 Verify that the host network uplink profile matches the configuration in Screenshot 1.3.3 below. If for any reason the host network profile does not already exist, add a network profile per Screenshot 1.3.3
-
-<details><summary>Screenshot 5.3.3</summary>
-<img src="Images/2018-10-11-18-09-55.png">
-</details>
-<br/>
-
-5.4 Add a transport zone for overlay networks
-
-5.4.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
-
-<details><summary>Screenshot 5.4.1</summary>
-<img src="Images/2018-10-13-15-19-11.png">
-</details>
-<br/>
-
-5.4.2 Add an overlay transport zone with the following details:
-
-- Name: tz-verlay
-- N-VDS Name: hs-overlay
-- N-VDS Mode: Standard
-- Traffic Type: Overlay
-
-<details><summary>Screenshot 5.4.2</summary>
-<img src="Images/2018-10-13-15-25-47.png">
-</details>
-<br/>
-
-5.5 Add a transport zone for VLAN networks
-
-5.5.1 In the NSX Manager UI, go to Fabric > Transport Zones and click "Add"
-
-<details><summary>Screenshot 5.5.1</summary>
-<img src="Images/2018-10-13-15-19-11.png">
-</details>
-<br/>
-
-5.5.2 Add an vlan transport zone with the following details:
-
-- Name: tz-vlan
-- N-VDS Name: hs-vlan
-- N-VDS Mode: Standard
-- Traffic Type: VLAN
-
-<details><summary>Screenshot</summary>
-<img src="Images/2018-10-13-15-29-13.png">
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-
-
-
-
-
-
-<details><summary>Screenshot</summary>
-
-</details>
+## [You have completed the initial NSX-T components installation, Please click here to proceed to the next section: Configuring NSX-T for PKS](../Lab2-Configure-NSXT2.2-for-PKS/)
