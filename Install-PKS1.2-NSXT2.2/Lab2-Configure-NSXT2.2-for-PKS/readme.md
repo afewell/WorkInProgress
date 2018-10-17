@@ -406,10 +406,240 @@ test reachability
 
 4.1.3 Configure T0 BGP
 
-4.1.3.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > 4.1.2.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > Static Routes and click to `Edit` the BGP Cpnfiguration
+4.1.3.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > BGP and click to `Edit` the BGP Cpnfiguration
 
 <details><summary>Screenshot 4.1.3.1</summary>
 <img src="Images/2018-10-15-01-41-53.png">
+</details>
+<br/>
+
+4.1.3.2 Edit the BGP Configuration using the following details:
+
+- Status: Enabled
+- Local AS: 65011
+
+<details><summary>Screenshot 4.1.3.2</summary>
+<img src="Images/2018-10-15-01-46-13.png">
+</details>
+<br/>
+
+4.1.3.3 On the BGP Configuration pane in the Neighbors section, click `ADD` and add a New Neighbor with the following details:
+
+- Neighbor Tab
+  - Neighbor Address: 192.168.200.1
+  - Remote AS: 65002
+- Local Address Tab
+  - All Uplinks: False (Unchecked)
+  - Type: Uplink
+  - In the Available List Box check the box to select `192.168.200.3 (ls-pks-uplink)`
+- Address Families Tab
+  - Just above the `Type` field, click `ADD` and change the value of the `State` column to `Enabled`
+
+<details><summary>Screenshot 4.1.3.3.1</summary>
+<img src="Images/2018-10-15-02-00-14.png">
+</details>
+
+<details><summary>Screenshot 4.1.3.3.2</summary>
+<img src="Images/2018-10-15-02-04-17.png">
+</details>
+
+<details><summary>Screenshot 4.1.3.3.3</summary>
+<img src="Images/2018-10-15-02-11-10.png">
+</details>
+<br/>
+
+4.1.4 Configure T0 Route Redistribution
+
+4.1.4.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > Route Redistribution and click to `ADD`
+
+<details><summary>Screenshot 4.1.4.1</summary>
+<img src="Images/2018-10-15-02-20-48.png">
+</details>
+<br/>
+
+4.1.4.2 In the New Redistribution Criteria window enter the following values and click `ADD`
+
+- Name: Route Redistribution
+- Sources
+  - NSX Connected
+  - NSX Static
+  - Tier-0 NAT
+  - Tier-1 NAT
+  - Tier-1 LB VIP
+
+<details><summary>Screenshot 4.1.4.2</summary>
+<img src="Images/2018-10-15-02-27-01.png">
+</details>
+<br/>
+
+4.1.4.3 From the Route Redistribution pane to the right of the Route Redistribution Header, click `Edit` and enable route redistribution
+
+<details><summary>Screenshot 4.1.4.3</summary>
+<img src="Images/2018-10-15-14-47-43.png">
+</details>
+<br/>
+
+4.2 Configure the `t1-pks-mgmt` Logical Router
+
+4.2.1 Add an uplink port to connect the TO to the uplink logical switch
+
+4.2.1.1 From the NSX Manager UI go to Routing > Routers, click on `t0-pks`. On the t0-pks details pain select Configuration > Router Ports
+
+add t0 to ls's
+configure routing
+nat rules
+test reachability
+
+
+
+<details><summary>Screenshot 4.2.1.1</summary>
+<img src="Images/2018-10-15-00-33-43.png">
+</details>
+<br/>
+
+4.2.1.2 On the Logical Router Ports pane, click `ADD`
+
+<details><summary>Screenshot 4.2.1.2</summary>
+<img src="Images/2018-10-15-00-38-25.png">
+</details>
+<br/>
+
+4.2.1.3 Add a new router port to connect to the uplink logical switch with the following details:
+
+- Name: ls-pks-uplink
+- Type: Uplink
+- URPF Mode: Strict
+- Transport Node: nsx-edge
+- Logical Switch: ls-pks-uplink
+- Logical Switch Port: Attach to New Switch Port
+- IP Address/Mask: 192.168.200.3/24
+
+<details><summary>Screenshot 4.2.1.3</summary>
+<img src="Images/2018-10-15-00-45-24.png">
+</details>
+<br/>
+
+4.2.2 Configure T0 Static Routing
+
+4.2.2.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > Static Routes and click `ADD`
+
+<details><summary>Screenshot 4.2.2.1</summary>
+<img src="Images/2018-10-15-01-17-46.png">
+</details>
+<br/>
+
+4.2.2.2 Add a Static Route with the following details:
+
+- Network: 0.0.0.0/0
+- Next Hop: 192.168.200.1
+
+<details><summary>Screenshot 4.2.2.2</summary>
+<img src="Images/2018-10-15-01-22-01.png">
+</details>
+<br/>
+
+4.2.3 Configure T0 BGP
+
+4.2.3.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > BGP and click to `Edit` the BGP Cpnfiguration
+
+<details><summary>Screenshot 4.2.3.1</summary>
+<img src="Images/2018-10-15-01-41-53.png">
+</details>
+<br/>
+
+4.2.3.2 Edit the BGP Configuration using the following details:
+
+- Status: Enabled
+- Local AS: 65011
+
+<details><summary>Screenshot 4.2.3.2</summary>
+<img src="Images/2018-10-15-01-46-13.png">
+</details>
+<br/>
+
+4.2.3.3 On the BGP Configuration pane in the Neighbors section, click `ADD` and add a New Neighbor with the following details:
+
+- Neighbor Tab
+  - Neighbor Address: 192.168.200.1
+  - Remote AS: 65002
+- Local Address Tab
+  - All Uplinks: False (Unchecked)
+  - Type: Uplink
+  - In the Available List Box check the box to select `192.168.200.3 (ls-pks-uplink)`
+- Address Families Tab
+  - Just above the `Type` field, click `ADD` and change the value of the `State` column to `Enabled`
+
+<details><summary>Screenshot 4.2.3.3.1</summary>
+<img src="Images/2018-10-15-02-00-14.png">
+</details>
+
+<details><summary>Screenshot 4.2.3.3.2</summary>
+<img src="Images/2018-10-15-02-04-17.png">
+</details>
+
+<details><summary>Screenshot 4.2.3.3.3</summary>
+<img src="Images/2018-10-15-02-11-10.png">
+</details>
+<br/>
+
+4.2.4 Configure T0 Route Redistribution
+
+4.2.4.1 In the NSX Manager UI go to Routers > t0-PKS > Routing > Route Redistribution and click to `ADD`
+
+<details><summary>Screenshot 4.2.4.1</summary>
+<img src="Images/2018-10-15-02-20-48.png">
+</details>
+<br/>
+
+4.2.4.2 In the New Redistribution Criteria window enter the following values and click `ADD`
+
+- Name: Route Redistribution
+- Sources
+  - NSX Connected
+  - NSX Static
+  - Tier-0 NAT
+  - Tier-1 NAT
+  - Tier-1 LB VIP
+
+<details><summary>Screenshot 4.2.4.2</summary>
+<img src="Images/2018-10-15-02-27-01.png">
+</details>
+<br/>
+
+4.2.4.3 From the Route Redistribution pane to the right of the Route Redistribution Header, click `Edit` and enable route redistribution
+
+<details><summary>Screenshot 4.2.4.3</summary>
+<img src="Images/2018-10-15-14-47-43.png">
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
+</details>
+<br/>
+
+<details><summary>Screenshot</summary>
+
 </details>
 <br/>
 
