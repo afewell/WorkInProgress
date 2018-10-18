@@ -273,16 +273,32 @@ This completes the NSX Manager installation, please proceed on to the Controller
 </details>
 <br/>
 
-2.13 In the vSphere web client, power on the nsxc-01a VM and wait a few minutes for the controller to fully boot up before proceeding
+2.13 In the vSphere web client go to Hosts and Clusters and on the `Actions` menu for your NSX Controller VM and select `Edit Settings`
 
 <details><summary>Screenshot 2.13</summary>
+<img src="Images/2018-10-17-22-35-37.png">
+</details>
+<br/>
+
+2.14 Expand the `Memory` section and set the `Reservation` to `0`
+
+NOTE: This step is provided to help limit the requirements for resource constrained lab environments, if your lab environment has ample hardware resources, you may skip this step
+
+<details><summary>Screenshot 2.14</summary>
+<img src="Images/2018-10-17-22-34-13.png">
+</details>
+<br/>
+
+2.15 In the vSphere web client, power on the nsxc-01a VM and wait a few minutes for the controller to fully boot up before proceeding
+
+<details><summary>Screenshot 2.15</summary>
 <img src="Images/2018-10-17-02-38-37.png">
 </details>
 <br/>
 
-2.14 SSH to the controller VM and login to verify deployment
+2.16 SSH to the controller VM and login to verify deployment
 
-<details><summary>Screenshot 2.14</summary>
+<details><summary>Screenshot 2.16</summary>
 <img src="Images/2018-10-17-03-12-04.png">
 </details>
 <br/>
@@ -358,113 +374,191 @@ This completes the NSX Manager installation, please proceed on to the Controller
 
 #### Step 4: Deploy NSX Edges
 
-4.1 Open a browser to the NSX Manager web UI and select Fabric > Nodes > Edges > Add Edge VM
+4.1 In the vSphere web client (not the HTML5 Client), From the Hosts and Clusters view, right click on the RegionA01-MGMT01 Cluster and select `Deploy OVF Template'
 
 <details><summary>Screenshot 4.1</summary>
-<img src="Images/2018-10-10-01-45-24.png">
+<img src="Images/2018-10-16-23-43-44.png">
 </details>
 <br/>
 
-4.2 In the Add Edge VM dialogue box, on the Name and Description tab, enter the following variables:
+4.2 On the `Select Template` step, select `Local File` and navigate to the NSX Edgt OVA
 
-- Name: nsx-edge
-- Host Name/FQDN: nsx-edge.corp.local
-- Form Factor: Large
-
-<details><summary>Screenshot</summary>
-<img src="Images/2018-10-10-01-57-27.png">
+<details><summary>Screenshot 4.2</summary>
+<img src="Images/2018-10-17-22-40-05.png">
 </details>
+<br/>
 
-4.3 In the Add Edge VM dialogue box, on the Credentials tab, enter the following variables:
-
-- CLI Password: VMware1!
-- System Root Password: VMware1!
+4.3 On the `Select name and location` step, set the `Name` to `nsxedge-01a` and select the `RegionA01` datacenter
 
 <details><summary>Screenshot 4.3</summary>
-<img src="Images/2018-10-10-02-00-54.png">
+<img src="Images/2018-10-17-22-43-30.png">
 </details>
+<br/>
 
-4.4 In the Add Edge VM dialogue box, on the Configure Deployment tab, enter the following variables:
-
-- Compute Manager: vcsa-01a.corp.local
-- Cluster: RegionA01-MGMT01
-- Resource Pool: Null
-- Host: Null
-- Datastore: RegionA01-ISCS01-COMP01
+4.4 On the `Select a resource` step, select the `RegionA01-MGMT01` cluster
 
 <details><summary>Screenshot 4.4</summary>
-<img src="Images/2018-10-10-02-03-25.png">
+<img src="Images/2018-10-17-22-45-13.png">
 </details>
+<br/>
 
-4.5 In the Add Edge VM dialogue box, on the Configure Ports tab, enter the following variables:
-
-- Ip Assignment: Static
-- Management IP: 192.168.100.112/24
-- Default Gateway: 192.168.100.1
-- Management Interface: VM-RegionA01-vDS-MGMT
-- Datapath Interface #1: VM-RegionA01-vDS-MGMT
+4.5 On the `Review details` Step, verify details and click `Next`
 
 <details><summary>Screenshot 4.5</summary>
-<img src="Images/2018-10-10-02-10-03.png">
+<img src="Images/2018-10-17-22-46-56.png">
 </details>
 <br/>
 
-4.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
+4.6 On the `Select Configuration` step, select the `Small` configuration
 
-4.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
+<details><summary>Screenshot 4.6</summary>
+<img src="Images/2018-10-17-22-49-47.png">
+</details>
+<br/>
+
+4.7 On the `Select Storage` step, select `Thin Provision` as the virtual disk format and `RegionA01-ISCSI01-COMP01` as the datastore
+
 <details><summary>Screenshot 4.7</summary>
-<img src="Images/2018-10-10-02-42-22.png">
+<img src="Images/2018-10-17-22-51-10.png">
 </details>
 <br/>
 
-4.7.1 If your nsx-edge VM is not powered on, power it on now
-
-4.8 Return to the Fabric > Nodes > Edges screen in the NSX Manager web UI, verify the deployment status is "Node Ready" and the Manager Connection is "Up" before proceeding. This may take several minutes after powering on the Edge VM
+4.8 On the `Select Networks` step, set each `Destination Network` to `VM-RegionA01-vDS-MGMT`
 
 <details><summary>Screenshot 4.8</summary>
-<img src="Images/2018-10-10-02-45-21.png">
+<img src="Images/2018-10-17-23-03-02.png">
 </details>
 
-#### NSX-T Host Preparation
+4.9 On the `Customize template` step, set enter the following details:
 
-This section follows the standard documentation, which includes additional details and explanations: [Host Preparation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-FCC5390E-3489-47E8-ABE6-2F7FD43775BD.html)
+- CLI admin user password: VMware1!
+- CLI audit user password: VMware1!
+- Manager IP: 192.168.110.42
+- Manager Thumbprint: Use the thumbprint from step 3.1 above
+- System Root User Password: VMware1!
+- DNS Server List: 192.168.110.10
+- Domain Search List: corp.local
+- Default IPv4 Gateway: 192.168.110.1
+- Hostname: nsxedge-01a
+- Management Network IPv4 Address: 192.168.110.91
+- Management Network Netmask: 255.255.255.0
+- Allow root SSH Logins: True
+- Enable SSH: True
+- NTP Server List: 192.168.100.1
 
-4.0 Add compute cluster ESXi hosts to the NSX-T fabric
+<details><summary>Screenshot 4.9</summary>
+<img src="Images/2018-10-17-23-47-38.png">
+</details>
+<br/>
 
-4.1 
+4.10 On the `Ready to complete` step, verify details and click `Finish`
+
+<details><summary>Screenshot 4.10</summary>
+<img src="Images/2018-10-17-23-48-31.png">
+</details>
+
+4.11 In the vSphere web client go to the task console and verify that the Status for Deploy OVF Template is "Completed" before proceeding
+<br/>
+
+<details><summary>Screenshot 4.11</summary>
+<img src="Images/2018-10-17-00-51-10.png">
+</details>
+<br/>
+
+4.12 In the vSphere web client go to Hosts and Clusters and on the `Actions` menu for `nsxedge-01a`, select `Edit Settings`
+
+<details><summary>Screenshot 4.12</summary>
+<img src="Images/2018-10-18-00-27-57.png">
+</details>
+<br/>
+
+4.13 Expand the `Memory` section and set the `Reservation` to `0`
+
+NOTE: This step is provided to help limit the requirements for resource constrained lab environments, if your lab environment has ample hardware resources, you may skip this step
+
+<details><summary>Screenshot 4.13</summary>
+<img src="Images/2018-10-18-00-38-26.png">
+</details>
+<br/>
+
+4.14 In the vSphere web client power on the NSX Edge VM, wait a few minutes for it to fully boot up before proceeding to the next step
+
+<details><summary>Screenshot 4.14</summary>
+<img src="Images/2018-10-18-01-10-53.png">
+</details>
+<br/>
+
+4.15 Ping the Edge VM
+
+<details><summary>Screenshot 4.15</summary>
+<img src="Images/2018-10-18-01-28-25.png">
+</details>
+<br/>
+
+4.16 SSH to the Edge VM and login to validate deployment
+
+<details><summary>Screenshot 4.16</summary>
+<img src="Images/2018-10-18-01-31-07.png">
+</details>
+<br/>
+
+#### Step 5: Register Edge with NSX Manager
+
+5.1 Resume your SSH session to NSX Edge and register the NSX Edge with NSX Manager using the following command, substituting the thumbprint with the thumbprint you gathered in step 3.1 above: 
+
+`join management-plane 192.168.110.42 username admin password VMware1! thumbprint ef409e15750f89be5b88b141201ddd35179b7e6af86bf08a2683c0c3f3a58557`
+
+<details><summary>Screenshot 5.1</summary>
+<img src="Images/2018-10-18-01-38-02.png">
+</details>
+<br/>
+
+5.2 From the NSX Edge CLI, check connectivity to NSX Manager with the command `get managers`
+
+<details><summary>Screenshot 5.2</summary>
+<img src="Images/2018-10-18-01-40-18.png">
+</details>
+<br/>
+
+5.3 From the NSX Manager UI, go to Fabric > Nodes > Edges and review the available information
+
+<details><summary>Screenshot 5.3</summary>
+<img src="Images/2018-10-18-01-49-51.png">
+</details>
+<br/>
+
+#### Step 6: Enable Repository Service on NSX Manager
+
+6.1 To trigger VIB install when hosts are added to the NSX-T fabric, from the NSX Manager CLI, enable the repository service with the command `set service install-upgrade enable`
+
+<details><summary>Screenshot 5.4</summary>
+<img src="Images/2018-10-18-02-00-08.png">
+</details>
+<br/>
+
+#### Step 7: Create TEP IP Pool
+
+6.2
 
 <details><summary>Screenshot</summary>
 
 </details>
+<br/>
 
 <details><summary>Screenshot</summary>
 
 </details>
+<br/>
 
 <details><summary>Screenshot</summary>
 
 </details>
+<br/>
 
 <details><summary>Screenshot</summary>
 
 </details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
-<details><summary>Screenshot</summary>
-
-</details>
-
+<br/>
 
 
 
