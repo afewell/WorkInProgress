@@ -18,49 +18,93 @@ This lab follows the standard documentation, which includes additional details a
 
 #### Install NSX-T Manager
 
+Overview of Tasks Covered in Lab 1
+
+- Step1: Deploy NSX Manager (= NSX Unified Appliance)
+- Step 2: Deploy NSX Controllers
+- Step 3: Create NSX Cluster (Management Plane and Cluster Control Plane)
+- Step 4: Deploy NSX Edges
+- Step 5: Register NSX Edge with NSX Manager
+- Step 6:  Enable repository service on NSX Manager
+- Step 7: Create TEP IP Pool
+- Step 8: Create Transport Zone Overlay (TZ-Overlay)
+- Step 9: Create Transport Zone for VLAN (TZ-VLAN)
+- Step 10: Create Uplink Profile for Edge Node
+- Step 11: Create Edge Transport Node
+- Step 12: Create Edge Cluster
+- Step 13: Create T0 router
+
 NOTE: NSX Manager OVA cannot be installed via HTML5 client, so for installation labs please use the vSphere web client (Flash-based).
 
 This section follows the standard documentation, which includes additional details and explanations: [NSX Manager Installation](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-A65FE3DD-C4F1-47EC-B952-DEDF1A3DD0CF.html)
 
-1.0 Install NSX-T Manager OVA File using OVF Install Wizard
+### Step 1:  Deploy NSXT Manager using OVF Install Wizard
 
-<details><summary>Screenshot 1.1</summary>
-<img src="Images/2018-10-09-13-28-29.png">
-</details>
+1.1 In the vSphere web client (not the HTML5 Client), From the Hosts and Clusters view, right click on the RegionA01-MGMT01 Cluster and select `Deploy OVF Template'
+
+<Details><Summary>Screenshot 1.1</Summary>
+<img src="Images/2018-10-16-23-43-44.png">
+</Details>
+<br/>
+
+1.2 On the `Select Template` step, select `Local File` and Navigate to the NSXT Manager OVA file. In the reference lab, this is located on the E:/Downloads Directory
 
 <details><summary>Screenshot 1.2</summary>
-<img src="Images/2018-10-09-13-29-24.png">
-</details>
-
-<details><summary>Screenshot 1.3</summary>
-<img src="Images/2018-10-09-13-30-15.png">
-</details>
-
-<details><summary>Screenshot 1.4</summary>
-<img src="Images/2018-10-09-13-30-35.png">
-</details>
-
-<details><summary>Screenshot 1.5</summary>
-<img src="Images/2018-10-09-13-30-56.png">
-</details>
-
-<details><summary>Screenshot 1.6</summary>
-<img src="Images/2018-10-09-13-55-04.png">
-</details>
-
-<details><summary>Screenshot 1.7</summary>
-<img src="Images/2018-10-09-14-00-22.png">
+<img src="Images/2018-10-16-23-48-52.png">
 </details>
 <br/>
-1.8 On the Customize Template tab, enter the following variables:
+
+1.3 On the `Select name and location` step, use the name `nsxmgr-01a` and select RegionA01 Datacenter as the location
+
+<details><summary>Screenshot 1.3</summary>
+<img src="Images/2018-10-17-00-06-33.png">
+</details>
+<br/>
+
+1.4 On the `Select a Resource` step, select RegionA01-MGMT
+
+<details><summary>Screenshot 1.4</summary>
+<img src="Images/2018-10-16-23-54-05.png">
+</details>
+<br/>
+
+1.5 On the `Review Details` step, verify details and click `Next`
+
+<details><summary>Screenshot 1.5</summary>
+<img src="Images/2018-10-16-23-55-58.png">
+</details>
+<br/>
+
+1.6 On the `Select Configuration` step, select a Small Configuration
+
+<details><summary>Screenshot 1.6</summary>
+<img src="Images/2018-10-16-23-57-38.png">
+</details>
+<br/>
+
+1.7 On the `Select Storage` step, set the virtual disk format to `Thin Provision` and select the `RegionA01-ISCSI01-COMP01` datastore
+
+<details><summary>Screenshot 1.7</summary>
+<img src="Images/2018-10-16-23-59-52.png">
+</details>
+<br/>
+
+1.8 On the `Select Networks` step, set the Destination Network to `VM-RegionA01-vDS-MGMT
+
+<details><summary>Screenshot 1.8</summary>
+<img src="Images/2018-10-17-00-02-21.png">
+</details>
+<br/>
+
+1.9 On the `Customize Template` step, enter the following variables:
 
 - System Root User Password: VMware1!
 - CLI Admin User Password: VMware1!
 - CLI Audit User Password: VMware1!
-- Hostname: nsx-manager
+- Hostname: nsxmgr-01a
 - Rolename: nsx-manager
-- Default Gateway: 192.168.100.1
-- Management Network IPv4 Address: 192.168.100.110
+- Default Gateway: 192.168.110.1
+- Management Network IPv4 Address: 192.168.110.42
 - Management Network Netmask: 255.255.255.0
 - DNS Server List: 192.168.110.10
 - Domain Search List: corp.local
@@ -70,203 +114,258 @@ This section follows the standard documentation, which includes additional detai
 - All other options were left as default values
 
 <details><summary>Screenshot 1.8</summary>
-<img src="Images/2018-10-09-15-57-06.png">
+<img src="Images/2018-10-17-00-12-14.png">
 </details>
+<br/>
 
-<br/>
 1.9 Complete the Deploy OVF Template Wizard
-<br/>
-<br/>
 
 <details><summary>Screenshot 1.9</summary>
-<img src="Images/2018-10-09-15-57-37.png">
+<img src="Images/2018-10-17-00-13-27.png">
 </details>
+<br/>
 
-<br/>
 1.10 In the vSphere web client go to the task console and verify that the Status for Deploy OVF Template is "Completed" before proceeding
-<br/>
 <br/>
 
 <details><summary>Screenshot 1.10</summary>
-<img src="Images/2018-10-09-17-00-03.png">
+<img src="Images/2018-10-17-00-51-10.png">
 </details>
+<br/>
 
-<br/>
-1.11 In the vSphere web client power on the NSX-Manager VM
-<br/>
-NOTE: If the option to power on the NSX-Manager VM is not available, log out and then log back in to the vSphere web client
-<br/>
-<br/>
+1.11 In the vSphere web client go to Hosts and Clusters and on the `Actions` menu for `nsxmgr-01a`, select `Edit Settings`
 
 <details><summary>Screenshot 1.11</summary>
-<img src="Images/2018-10-09-17-02-52.png">
+<img src="Images/2018-10-17-02-19-08.png">
 </details>
-
 <br/>
-1.12 Using the IP address you assigned to NSX Manager in the Deploy OVF Template Wizard, open a web browser connection to NSX Manager, for example:
 
-```https://192.168.100.110/login.jsp```
+1.12 Expand the `Memory` section and set the `Reservation` to `0`
+
+NOTE: This step is provided to help limit the requirements for resource constrained lab environments, if your lab environment has ample hardware resources, you may skip this step
+
+<details><summary>Screenshot 1.12</summary>
+<img src="Images/2018-10-17-02-22-04.png">
+</details>
+<br/>
+
+1.13 In the vSphere web client power on the nsxmgr-01a VM, wait a few minutes for NSX Manager to fully boot up before proceeding to the next step
+
+NOTE: If the option to power on the nsxmgr-01a VM is not available, log out and then log back in to the vSphere web client
+
+<details><summary>Screenshot 1.13</summary>
+<img src="Images/2018-10-17-01-23-08.png">
+</details>
+<br/>
+
+1.14 Using the IP address you assigned to NSX Manager in the Deploy OVF Template Wizard, open a web browser connection to NSX Manager, for example:
+
+`https://nsxmgr-01a.corp.local/login.jsp`
 
 <br/>
 NOTE: On your first login, you will be prompted to accept the EULA
 <br/>
 <br/>
 
-<details><summary>Screenshot 1.12</summary>
-<img src="Images/2018-10-09-17-13-37.png">
+<details><summary>Screenshot 1.14</summary>
+<img src="Images/2018-10-17-01-34-33.png">
 </details>
 <br/>
 This completes the NSX Manager installation, please proceed on to the Controller installation section below
 
-#### NSX-T Controller Installation
+#### 2.0 NSX-T Controller Installation
 
-This section follows the standard documentation, which includes additional details and explanations: [Configure Automated Installation of Controller and Cluster using the NSX Manager UI](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-92843E38-127B-4F85-8B7A-C8027E86175C.html)
-
-As this is a lab environment, we will only be installing a single controller, you can reference the documentation above for instructions on multi-controller installations
-
-2.0 Install NSX-T Controller
-<br/>
-<br/>
-2.1 In the NSX Manager web interface, go to the Compute Managers section in the fabric panel per the image below
+2.1 In the vSphere web client (not the HTML5 Client), From the Hosts and Clusters view, right click on the RegionA01-MGMT01 Cluster and select `Deploy OVF Template'
 
 <details><summary>Screenshot 2.1</summary>
-<img src="Images/2018-10-09-21-21-39.png">
+<img src="Images/2018-10-16-23-43-44.png">
 </details>
 <br/>
 
-2.2 In the New Compute Manager dialogue box, enter the following variables:
-
-- Name: vcsa-01a.corp.local
-- Domain Name: vcsa-01a.corp.local
-- Username: administrator@corp.local
-- Password: VMware1!
-- Leave the SHA-256 Thumbprint Blank
+2.2 On the `Select Template` step, select `Local File` and navigate to the NSX Controller OVA file
 
 <details><summary>Screenshot 2.2</summary>
-<img src="Images/2018-10-09-22-26-22.png">
+<img src="Images/2018-10-17-01-49-19.png">
 </details>
 <br/>
 
-2.3 In the Invalid Thumbprint dialogue box, click add to populate vCenters thumbprint
+2.3 On the `Select name and location` step, enter `nsxc-01a` as the name and select `RegionA01` as the datacenter
 
 <details><summary>Screenshot 2.3</summary>
-<img src="Images/2018-10-09-23-05-22.png">
+<img src="Images/2018-10-17-01-51-42.png">
 </details>
 <br/>
 
-2.4 On the Compute Managers Screen, verify that the registration status for vcsa-01a.corp.local is "Registered". If it is showing up as not registered, please see section 2.5 below.
+2.4 On the `Select a resource` step, select the `RegionA01-MGMT01` cluster
 
 <details><summary>Screenshot 2.4</summary>
-<img src="Images/2018-10-09-23-24-08.png">
+<img src="Images/2018-10-17-01-53-43.png">
 </details>
 <br/>
 
-<details><summary>2.5 If your computer manager registration status is "Not Registered" expand this section and follow the steps</summary>
-<br/>
-2.5.1 In the NSX Manager UI on the "Compute Managers" page, click on the "Not Registered" link as shown in the following image:
+2.5 On the `Review details` step, review the details and click `Next`
 
-<img src="Images/2018-10-09-23-35-08.png">
-<br/>
-<br/>
-2.5.2 Select the checkbox next to the error shown, and click "Resolve" as in the image below:
-<img src="Images/2018-10-09-23-39-41.png">
-<br/>
-<br/>
-2.5.3 In the Resolve Errors dialogue box, enter the administrator username and password for vCenter and click "Add" as in the image below - Note that it can take a minute or two for the Registration Status to update:
-
-<img src="Images/2018-10-09-23-43-40.png">
+<details><summary>Screenshot 2.5</summary>
+<img src="Images/2018-10-17-01-56-05.png">
 </details>
 <br/>
 
 2.6 In the NSX Manager web UI, expand the System panel, select the "Components" page, and select "Add Controllers"
 
 <details><summary>Screenshot 2.6</summary>
-<img src="Images/2018-10-09-23-50-34.png">
+<img src="Images/2018-10-17-01-56-56.png">
 </details>
 <br/>
 
-2.7 In the Add Controllers dialogue box on the Common Attributes page, enter the following values and click "Next":
-
-- Compute Manager: vcsa-01a.corp.local
-- Enable SSH: True
-- Enable Root Access: True
-- Join Existing Cluster: False
-- Shared Secret: VMware1!
-- CLI Password: VMware1!
-- Root Password: VMware1!
-- All other variables left to default values
+2.7 On the `Select Configuration` step, select a `Small` configuration
 
 <details><summary>Screenshot 2.7</summary>
-<img src="Images/2018-10-09-23-58-53.png">
+<img src="Images/2018-10-17-01-58-35.png">
 </details>
 <br/>
 
-2.7 In the Add Controllers dialogue box on the Controllers page, enter the following values and click "Finish"
-
-- Hostname: nsx-controller
-- Cluster: RegionA01-MGMT01
-- Resource Pool: Null
-- Host: Null
-- Datastore: RegionA01-ISCSI01-COMP01
-- VM-RegionA01-vDS-MGMT
-- Management IP/Netmask: 192.168.100.111/24
-- Management Gateway: 192.168.100.1
-
-<details><summary>Screenshot 2.7</summary>
-<img src="Images/2018-10-10-00-11-07.png">
-</details>
-<br/>
-
-2.8 View the controller deployment status near the bottom of the Components page and wait for the controller to finish deploying. If your controller deployment has a power-on error, please see section 2.8 below. 
+2.8 On the `Select Storage` step, select `Thin Provision` as the virtual disk format and `RegionA01-ISCSI01-COMP01` as the datastore
 
 <details><summary>Screenshot 2.8</summary>
-<img src="Images/2018-10-10-00-18-38.png">
+<img src="Images/2018-10-17-02-00-58.png">
 </details>
 <br/>
 
-<details><summary>2.9 If you have a power-on error for your controller VM, expand this section and follow the steps</summary>
-<br/>
-2.9.1 The standard PKS lab environment does not have enough RAM in the management cluster to meet the default requirement of the NSX-T 2.2 Controller. If you are using your own lab environment, you can adjust the RAM available in your manamgent cluster if you have capacity. Otherwise we will adjust the RAM used by the NSX controller VM
+2.9 On the `Select networks` step, set the `Destination Network` to `VM-RegionA01-vDS-MGMT`
 
-<img src="Images/2018-10-10-00-24-47.png">
-<br/>
-2.9.2 In the vSphere web or HTML5 client, select the nsx-controller VM and Edit Settings
-
-<img src="Images/2018-10-10-00-29-51.png">
-<br/>
-2.9.3 Change the Memory to 8GB and press OK
-
-<img src="Images/2018-10-10-00-32-26.png">
-<br/>
-2.9.4 Power on the nsx-controller VM in vSphere web or HTML5 Client
-
+<details><summary>Screenshot 2.9</summary>
+<img src="Images/2018-10-17-02-02-54.png">
 </details>
 <br/>
-2.10 Wait for the controller cluster to appear on the Components page in NSX Manager web UI
+
+2.10 On the `Customize template` step, enter the following details:
+
+- CLI Admin User Password: VMware1!
+- CLI Audit User Password: VMware1!
+- System Root User Password: VMware1!
+- DNS Server List: 192.168.110.10
+- Domain Search List: corp.local
+- Default Gateway: 192.168.110.1
+- Hostname: nsxc-01a
+- Management IP: 192.168.110.31
+- Management Netmask: 255.255.255.0
+- Allow root SSH logins: True
+- Enable SSH: True
+- NTP Server List: 192.168.100.1
+- Use defaults for any parameters that arent specified
+
 <details><summary>Screenshot 2.10</summary>
-<img src="Images/2018-10-10-00-36-16.png">
+<img src="Images/2018-10-17-02-11-04.png">
 </details>
 <br/>
-2.11 Open an SSH session to nsx-manager and nsx-controller and confirm controller registration per Screenshot 2.11 below
+
+2.11 On the `Ready to complete` step, review details and click `Finish`. 
 
 <details><summary>Screenshot 2.11</summary>
-<img src="Images/2018-10-10-00-38-33.png">
+<img src="Images/2018-10-17-02-13-04.png">
 </details>
+<br/>
 
-#### NSX-T Edge Installation
+2.12 In the vSphere web client, monitor the OVF deployment on the `Tasks` or `Recent Tasks` screen and wait for the status of the `Deploy OVF template` task to change to `Completed` befor proceeding
 
-This section follows the standard documentation, which includes additional details and explanations: [Automatic Deployment of NSX Edge VMs from NSX Manager](https://docs.vmware.com/en/VMware-NSX-T/2.2/com.vmware.nsxt.install.doc/GUID-8C8A8A1E-3E4F-4C62-A373-B37018145E6E.html)
+<details><summary>Screenshot 2.12</summary>
+<img src="Images/2018-10-17-02-35-17.png">
+</details>
+<br/>
 
-3.0 Install NSX Edge VM
+2.13 In the vSphere web client, power on the nsxc-01a VM and wait a few minutes for the controller to fully boot up before proceeding
 
-3.1 Open a browser to the NSX Manager web UI and select Fabric > Nodes > Edges > Add Edge VM
+<details><summary>Screenshot 2.13</summary>
+<img src="Images/2018-10-17-02-38-37.png">
+</details>
+<br/>
+
+2.14 SSH to the controller VM and login to verify deployment
+
+<details><summary>Screenshot 2.14</summary>
+<img src="Images/2018-10-17-03-12-04.png">
+</details>
+<br/>
+
+#### Step 3: Create NSX Cluster (Management Plane & Cluster Control Plane)
+
+3.1 Open and SSH or console session with NSX Manager and gather the API thumbrint with the command `get certificate api thumbprint`
 
 <details><summary>Screenshot 3.1</summary>
+<img src="Images/2018-10-17-16-19-50.png">
+</details>
+<br/>
+
+3.2 Open and SSH or console session with the NSX Controller(s) and enter the following command using the NSX Manager thumbprint from your environment to join the controller to the managment cluster:
+
+`join-management-plane 192.168.110.42 thumbprint ef409e15750f89be5b88b141201ddd35179b7e6af86bf08a2683c0c3f3a58557 username admin password VMware1!`
+
+<details><summary>Screenshot 3.2</summary>
+<img src="Images/2018-10-17-16-26-35.png">
+</details>
+<br/>
+
+3.3 From the NSX Controller CLI enter the following command to configure the control cluster shared secret:
+
+`set control-cluster security-model shared-secret secret VMware1!`
+
+<details><summary>Screenshot 3.3</summary>
+<img src="Images/2018-10-17-20-54-46.png">
+</details>
+<br/>
+
+3.4 From the NSX Controller CLI intialize the control cluster with the command `initialize control-cluster`
+
+<details><summary>Screenshot 3.4</summary>
+<img src="Images/2018-10-17-21-01-49.png">
+</details>
+<br/>
+
+3.5 From the NSX Controller CLI activate the control cluster with the command `activate control-cluster`
+
+<details><summary>Screenshot 3.5</summary>
+<img src="Images/2018-10-17-21-03-57.png">
+</details>
+<br/>
+
+3.6 From the NSX Controller CLI confirm connectivity to the NSX Manager with the command `get managers`
+
+<details><summary>Screenshot 3.6</summary>
+<img src="Images/2018-10-17-21-07-04.png">
+</details>
+<br/>
+
+3.7 From the NSX Controller CLI check control cluster details and status with the command `get control-cluster status`
+
+<details><summary>Screenshot 3.7</summary>
+<img src="Images/2018-10-17-21-14-09.png">
+</details>
+<br/>
+
+3.8 Resume your SSH session with NSX Manager and check the management cluster status with the command `get management-cluster status`
+
+<details><summary>Screenshot 3.8</summary>
+<img src="Images/2018-10-17-22-12-17.png">
+</details>
+<br/>
+
+3.9 Open a browser session, log in to the NSX Manager UI and select System > Components to monitor the management and control cluster status
+
+<details><summary>Screenshot 3.9</summary>
+<img src="Images/2018-10-17-22-23-30.png">
+</details>
+<br/>
+
+#### Step 4: Deploy NSX Edges
+
+4.1 Open a browser to the NSX Manager web UI and select Fabric > Nodes > Edges > Add Edge VM
+
+<details><summary>Screenshot 4.1</summary>
 <img src="Images/2018-10-10-01-45-24.png">
 </details>
 <br/>
 
-3.2 In the Add Edge VM dialogue box, on the Name and Description tab, enter the following variables:
+4.2 In the Add Edge VM dialogue box, on the Name and Description tab, enter the following variables:
 
 - Name: nsx-edge
 - Host Name/FQDN: nsx-edge.corp.local
@@ -276,16 +375,16 @@ This section follows the standard documentation, which includes additional detai
 <img src="Images/2018-10-10-01-57-27.png">
 </details>
 
-3.3 In the Add Edge VM dialogue box, on the Credentials tab, enter the following variables:
+4.3 In the Add Edge VM dialogue box, on the Credentials tab, enter the following variables:
 
 - CLI Password: VMware1!
 - System Root Password: VMware1!
 
-<details><summary>Screenshot 3.3</summary>
+<details><summary>Screenshot 4.3</summary>
 <img src="Images/2018-10-10-02-00-54.png">
 </details>
 
-3.4 In the Add Edge VM dialogue box, on the Configure Deployment tab, enter the following variables:
+4.4 In the Add Edge VM dialogue box, on the Configure Deployment tab, enter the following variables:
 
 - Compute Manager: vcsa-01a.corp.local
 - Cluster: RegionA01-MGMT01
@@ -293,11 +392,11 @@ This section follows the standard documentation, which includes additional detai
 - Host: Null
 - Datastore: RegionA01-ISCS01-COMP01
 
-<details><summary>Screenshot 3.4</summary>
+<details><summary>Screenshot 4.4</summary>
 <img src="Images/2018-10-10-02-03-25.png">
 </details>
 
-3.5 In the Add Edge VM dialogue box, on the Configure Ports tab, enter the following variables:
+4.5 In the Add Edge VM dialogue box, on the Configure Ports tab, enter the following variables:
 
 - Ip Assignment: Static
 - Management IP: 192.168.100.112/24
@@ -305,24 +404,24 @@ This section follows the standard documentation, which includes additional detai
 - Management Interface: VM-RegionA01-vDS-MGMT
 - Datapath Interface #1: VM-RegionA01-vDS-MGMT
 
-<details><summary>Screenshot 3.5</summary>
+<details><summary>Screenshot 4.5</summary>
 <img src="Images/2018-10-10-02-10-03.png">
 </details>
 <br/>
 
-3.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
+4.6 Wait for the deployment to complete, your deployment status may say "Power On Failed" if you exceed the memory allocation of your management cluster. Whether you recieved this error or not, it is a good practice in lab environments only to reduce the memory reservation on the nsx-edge VM to limit resource requirements for lab environments
 
-3.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
-<details><summary>Screenshot 3.7</summary>
+4.7 In the vSphere web client (flash-based), edit the settings of the nsx-edge VM so there is no memory reservation
+<details><summary>Screenshot 4.7</summary>
 <img src="Images/2018-10-10-02-42-22.png">
 </details>
 <br/>
 
-3.7.1 If your nsx-edge VM is not powered on, power it on now
+4.7.1 If your nsx-edge VM is not powered on, power it on now
 
-3.8 Return to the Fabric > Nodes > Edges screen in the NSX Manager web UI, verify the deployment status is "Node Ready" and the Manager Connection is "Up" before proceeding. This may take several minutes after powering on the Edge VM
+4.8 Return to the Fabric > Nodes > Edges screen in the NSX Manager web UI, verify the deployment status is "Node Ready" and the Manager Connection is "Up" before proceeding. This may take several minutes after powering on the Edge VM
 
-<details><summary>Screenshot 3.8</summary>
+<details><summary>Screenshot 4.8</summary>
 <img src="Images/2018-10-10-02-45-21.png">
 </details>
 
