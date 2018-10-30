@@ -18,8 +18,5 @@ For those needing access to VMware licensing for lab and educational purposes, w
 
 ## Table of Contents
 
-### [Lab 1 - NSX-T 2.3 Installation](./Lab1-Install-NSXT2.3)
+### [Lab 1 - NSX-T 2.3 Installation](./Lab1-NsxtInstallation)
 
-### [Lab 2 - NSX-T 2.3 Configuration for PKS](./Lab2-Configure-NSXT2.3-for-PKS)
-
-### [Lab 3 - Install and Configure Ops Manager 2.3](./Lab3-InstallandConfigure-OpsMan-for-PKS)
